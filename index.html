@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spinning Decision Wheel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom CSS Animation for Wheel Spin -->
+  <style>
+    /* Define spin animation with 5 full rotations (1800 degrees) */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(1800deg);
+      }
+    }
+    
+    /* Performance optimizations for smooth animation */
+    .wheel-disc {
+      will-change: transform;
+      transform: translateZ(0);
+    }
+    
+    /* Accessibility: Respect user's motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      .wheel-disc {
+        /* Reduce animation to instant rotation for users who prefer reduced motion */
+        animation-duration: 0.1s !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+  <!-- Main container with flexbox centering -->
+  <div class="min-h-screen flex items-center justify-center p-8">
+    <!-- Hidden checkbox for animation trigger using CSS checkbox hack -->
+    <input type="checkbox" id="spin-trigger" class="hidden peer" aria-label="Spin the wheel trigger" />
+    
+    <!-- Wheel interface container -->
+    <div class="relative">
+      
+      <!-- Wheel wrapper with 3D perspective and sizing -->
+      <div class="relative w-96 h-96 mx-auto" style="perspective: 1000px;">
+        
+        <!-- Pointer/Arrow - Stationary indicator at top of wheel -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-20 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-yellow-400 drop-shadow-2xl"></div>
+        
+        <!-- Wheel disc - this element will rotate when checkbox is checked -->
+        <div class="wheel-disc absolute inset-0 rounded-full shadow-2xl peer-checked:animate-[spin_4s_cubic-bezier(0.17,0.67,0.12,0.99)_forwards] peer-checked:[animation-iteration-count:1]" style="transform-style: preserve-3d;">
+          
+          <!-- Segment 1: Red to Pink (0°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(0deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-red-500 to-pink-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg">Option 1</span>
+            </div>
+          </div>
+          
+          <!-- Segment 2: Orange to Yellow (60°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(60deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-orange-500 to-yellow-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg" style="transform: rotate(-60deg);">Option 2</span>
+            </div>
+          </div>
+          
+          <!-- Segment 3: Green to Emerald (120°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(120deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg" style="transform: rotate(-120deg);">Option 3</span>
+            </div>
+          </div>
+          
+          <!-- Segment 4: Blue to Cyan (180°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(180deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg" style="transform: rotate(-180deg);">Option 4</span>
+            </div>
+          </div>
+          
+          <!-- Segment 5: Indigo to Purple (240°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(240deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg" style="transform: rotate(-240deg);">Option 5</span>
+            </div>
+          </div>
+          
+          <!-- Segment 6: Violet to Fuchsia (300°) -->
+          <div class="absolute inset-0 origin-center" style="transform: rotate(300deg); clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 93.3% 25%);">
+            <div class="w-full h-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-start justify-center pt-8">
+              <span class="text-white font-bold text-lg" style="transform: rotate(-300deg);">Option 6</span>
+            </div>
+          </div>
+          
+          <!-- Center Hub - Visual anchor with SPIN call-to-action -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 shadow-2xl border-4 border-white flex items-center justify-center z-10">
+            <span class="text-white font-black text-xl">SPIN</span>
+          </div>
+          
+        </div>
+        
+        <!-- Decorative Outer Ring - Glowing border around wheel -->
+        <div class="absolute inset-0 rounded-full border-8 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.5)] pointer-events-none"></div>
+        
+      </div>
+      
+      <!-- Spin Button - Label for checkbox trigger -->
+      <label for="spin-trigger" class="mt-12 block mx-auto w-fit cursor-pointer px-12 py-5 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white font-black text-2xl rounded-full shadow-2xl hover:shadow-[0_0_40px_rgba(251,146,60,0.8)] hover:scale-110 transition-all duration-300 active:scale-95">
+        SPIN THE WHEEL
+      </label>
+      
+      <!-- Reset Button - Unchecks the checkbox to reset wheel -->
+      <label for="spin-trigger" class="mt-4 block mx-auto w-fit cursor-pointer px-8 py-3 bg-gray-700 text-white font-bold text-lg rounded-full shadow-lg hover:bg-gray-600 transition-all duration-300">
+        Reset
+      </label>
+      
+    </div>
+    
+  </div>
+</body>
+</html>
